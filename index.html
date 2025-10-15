@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🍽️ Restaurant Review Sentiment Analyzer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+
+</head>
+<body>
+  <!-- Background wrapper -->
+  <div class="background-wrapper">
+
+    <!-- Navbar -->
+     
+    <nav class="navbar">
+      <div class="navbar-left">
+        <span id="typing-text"></span>
+      </div>
+      <div class="navbar-right">
+        <a href="#" onclick="location.reload()">Home</a>
+        <a href="#" id="analyzeBtn">Analyze</a>
+        <a href="http://127.0.0.1:5000/history" target="_blank">History</a>
+        <a href="#" id="searchBtn">🔍 Search</a>
+
+
+      </div>
+
+    </nav>
+
+
+    <!-- Main container -->
+    <div class="app-container">
+
+      <div class="card-wrapper">
+        <!-- Background carousel behind card -->
+        <div class="carousel-track">
+          <img src="img1.png" alt="">
+          <img src="img2.png" alt="">
+          <img src="img3.png" alt="">
+          <img src="img4.png" alt="">
+          <img src="img5.png" alt="">
+          <img src="img6.png" alt="">
+          <img src="img7.png" alt="">
+          <img src="img8.png" alt="">
+          <img src="img9.png" alt="">
+          <!-- duplicate for smooth scroll -->
+          <img src="img1.png" alt="">
+          <img src="img2.png" alt="">
+          <img src="img3.png" alt="">
+          <img src="img4.png" alt="">
+          <img src="img5.png" alt="">
+          <img src="img6.png" alt="">
+          <img src="img7.png" alt="">
+          <img src="img8.png" alt="">
+          <img src="img9.png" alt="">
+        </div>
+
+        <!-- Card -->
+        <div class="card">
+          <h1>🍽️ Sentiment Analyzer</h1>
+          <p class="subtitle">Enter a restaurant review and instantly see if it’s Positive, Negative, or Neutral</p>
+
+          <textarea id="reviewInput" placeholder="Type your review here..."></textarea>
+          
+          <button onclick="analyzeSentiment()">🔍 Analyze Review</button>
+
+          <div id="loader" class="loader hidden"></div>
+          
+          <div id="resultCard" class="result-card hidden">
+            <h2 id="result"></h2>
+            <p id="confidence"></p>
+            <p id="suggestion" class="suggestion"></p>
+            <p id="timestamp" class="timestamp"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- History Table (hidden by default) -->
+<div id="historyContainer" class="hidden">
+  <h2>📜 Review History</h2>
+  <button id="backBtn">← Back to Analyzer</button>
+
+  <!-- NEW WRAPPER -->
+  <div id="historyTableWrapper">
+    <table id="historyTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Review</th>
+          <th>Sentiment</th>
+          <th>Confidence (%)</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Rows will be added dynamically -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<!-- Analyze Graph Container (hidden by default) -->
+<div id="analyzeContainer" class="hidden">
+  <h2>📊 Reviews Analysis</h2>
+  <button id="backAnalyzeBtn">← Back</button>
+  <canvas id="reviewChart" width="400" height="250"></canvas>
+</div>
+
+
+<!-- ==================== SEARCH SECTION ==================== -->
+ 
+ <!-- 🔍 Search Section -->
+<div id="searchContainer" class="hidden">
+  <button id="backSearchBtn">⬅ Back</button>
+  <h2>🔍 Search Restaurants</h2>
+
+  <form id="searchForm">
+    <input type="text" id="cityInput" placeholder="Enter city or area" required>
+    <input type="text" id="restaurantInput" placeholder="Enter restaurant name" required>
+    <button type="submit">Search</button>
+  </form>
+
+  <div id="searchResults" class="results-container"></div>
+  <div id="map" class="map-view"></div>
+</div>
+
+
+    <!-- Footer -->
+    <footer>
+      <p>Made with ❤️ for Major Project</p>
+    </footer>
+  </div> <!-- end background-wrapper -->
+
+  <script src="script.js"></script>
+</body>
+</html>
