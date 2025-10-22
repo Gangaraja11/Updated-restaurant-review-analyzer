@@ -119,16 +119,21 @@
 <!-- ==================== SEARCH SECTION ==================== -->
  
  <!-- 🔍 Search Section -->
+  <!-- ==================== SEARCH SECTION ==================== -->
 <div id="searchContainer" class="hidden">
   <button id="backSearchBtn">⬅ Back</button>
   <h2>🔍 Search Restaurants</h2>
 
   <form id="searchForm">
     <input type="text" id="cityInput" placeholder="Enter city or area" required>
-    <input type="text" id="restaurantInput" placeholder="Enter restaurant name" required>
+    <input type="text" id="restaurantInput" placeholder="Enter restaurant name (optional)">
     <button type="submit">Search</button>
   </form>
 
+  <!-- Loader -->
+  <div id="searchLoader" class="loader hidden"></div>
+
+  <!-- Results -->
   <div id="searchResults" class="results-container"></div>
   <div id="map" class="map-view"></div>
 </div>
