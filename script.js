@@ -121,7 +121,9 @@ document.addEventListener("DOMContentLoaded", () => {
   typeWriter();
 });
 
+
 // history page
+
 document.addEventListener("DOMContentLoaded", () => {
   const historyBtn = document.querySelector(".navbar-right a[href$='history']");
   const historyContainer = document.getElementById("historyContainer");
@@ -169,7 +171,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+
+
+
 // analyze graph
+// ===================== Analyze Graph Section =====================
+// ===================== Analyze Graph Section =====================
 document.addEventListener("DOMContentLoaded", () => {
   const analyzeBtn = document.getElementById("analyzeBtn");
   const analyzeContainer = document.getElementById("analyzeContainer");
@@ -184,7 +191,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Hide other containers
     appContainer.style.display = "none";
     historyContainer.classList.add("hidden");
-    analyzeContainer.style.display = "block";  // show graph only here
+
+    // Show analyze container smoothly
+    analyzeContainer.style.display = "block";
+    setTimeout(() => analyzeContainer.classList.add("show"), 10);
 
     try {
       const response = await fetch("http://127.0.0.1:5000/history");
@@ -198,25 +208,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      // Chart.js
+      // Prepare chart data
+      const labels = ["Positive", "Negative", "Neutral"];
+      const values = [
+        sentimentCounts.Positive,
+        sentimentCounts.Negative,
+        sentimentCounts.Neutral
+      ];
+      const colors = ["green", "red", "orange"];
+
+      // Destroy previous chart if exists
+      if (chartInstance) chartInstance.destroy();
+
       const ctx = document.getElementById("reviewChart").getContext("2d");
-
-      if(chartInstance) {
-        chartInstance.destroy(); // Remove old chart if exists
-      }
-
       chartInstance = new Chart(ctx, {
         type: "bar",
         data: {
-          labels: ["Positive", "Negative", "Neutral"],
+          labels: labels,
           datasets: [{
             label: "Number of Reviews",
-            data: [
-              sentimentCounts.Positive,
-              sentimentCounts.Negative,
-              sentimentCounts.Neutral
-            ],
-            backgroundColor: ["green", "red", "orange"]
+            data: [0, 0, 0], // start from 0
+            backgroundColor: colors
           }]
         },
         options: {
@@ -225,38 +237,61 @@ document.addEventListener("DOMContentLoaded", () => {
             legend: { display: false },
             title: { display: true, text: "Sentiment Analysis of All Reviews" }
           },
-          animation: {
-            duration: 3000,
-            easing: "easeInOutQuart",
-            onProgress: function(animation) {
-              const dataset = this.data.datasets[0].data;
-              const totalSteps = animation.numSteps;
-              const currentStep = animation.currentStep;
-
-              dataset.forEach((value, index) => {
-                const increment = value / totalSteps;
-                dataset[index] = Math.min(value, increment * currentStep);
-              });
-            }
+          animation: { duration: 0 }, // disable default animation
+          scales: {
+            y: { beginAtZero: true }
           }
         }
       });
 
+      // Smooth sequential bar animation using requestAnimationFrame
+      function animateBars(chart, finalValues, index = 0) {
+        if (index >= finalValues.length) return; // stop when all bars done
+
+        let current = 0;
+        const duration = 1500; // 1.5 seconds per bar
+        const startTime = performance.now();
+
+        function animate(time) {
+          const elapsed = time - startTime;
+          const progress = Math.min(elapsed / duration, 1); // 0 → 1
+          current = finalValues[index] * progress;
+          chart.data.datasets[0].data[index] = current;
+          chart.update();
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            // animate next bar
+            animateBars(chart, finalValues, index + 1);
+          }
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      // Start the animation
+      animateBars(chartInstance, values);
+
     } catch (error) {
-      console.error("Error fetching data for analysis:", error);
+      console.error("Error fetching data:", error);
       analyzeContainer.innerHTML += "<p style='color:red;'>Failed to load analysis.</p>";
     }
   });
 
+  // Back button to hide container smoothly
   backAnalyzeBtn.addEventListener("click", () => {
-    analyzeContainer.style.display = "none";   // hide graph
-    appContainer.style.display = "block";      // back to main
+    analyzeContainer.classList.remove("show");
+    setTimeout(() => {
+      analyzeContainer.style.display = "none";
+      appContainer.style.display = "block";
+    }, 600);
   });
 });
 
 
 
-// search section
+// ===================== NAVIGATION HANDLING =====================
 // ===================== NAVIGATION HANDLING =====================
 const appContainer = document.querySelector(".app-container");
 const analyzeContainer = document.getElementById("analyzeContainer");
@@ -266,7 +301,6 @@ const searchContainer = document.getElementById("searchContainer");
 const searchBtn = document.getElementById("searchBtn");
 const backSearchBtn = document.getElementById("backSearchBtn");
 
-// Hide all other sections
 function hideAllSections() {
   appContainer.style.display = "none";
   analyzeContainer.classList.add("hidden");
@@ -274,127 +308,171 @@ function hideAllSections() {
   searchContainer.style.display = "none";
 }
 
-// Show Search section when button clicked
 searchBtn.addEventListener("click", () => {
   hideAllSections();
   searchContainer.style.display = "block";
   searchContainer.classList.add("active");
 });
 
-// Back button returns to main analyzer
 backSearchBtn.addEventListener("click", () => {
   searchContainer.style.display = "none";
   appContainer.style.display = "block";
 });
 
-
 // ===================== SEARCH FUNCTIONALITY =====================
 const searchForm = document.getElementById("searchForm");
 const searchResults = document.getElementById("searchResults");
+const searchLoader = document.getElementById("searchLoader");
 
-let map; // Global map variable
+let map; // Global map
 
 searchForm.addEventListener("submit", async (e) => {
   e.preventDefault();
+
   const city = document.getElementById("cityInput").value.trim();
   const restaurantName = document.getElementById("restaurantInput").value.trim();
 
-  if (!city || !restaurantName) {
-    alert("⚠️ Please enter both city and restaurant name!");
+  // Input validation
+  if (!city) {
+    searchResults.innerHTML = `<p style="color:red;">⚠️ Please enter a city name!</p>`;
     return;
   }
 
-  searchResults.innerHTML = "<p>🔍 Searching for restaurants...</p>";
+  const invalidPattern = /[^a-zA-Z\s]/;
+  if ((invalidPattern.test(city) || city.length < 2) ||
+      (restaurantName && (invalidPattern.test(restaurantName) || restaurantName.length < 2))) {
+    searchResults.innerHTML = `<p style="color:red;">❌ Invalid city or restaurant name! Please try again.</p>`;
+    return;
+  }
+
+  // Show loader
+  searchResults.innerHTML = "";
+  searchLoader.classList.remove("hidden");
 
   try {
-    // Example restaurant data (offline)
-    const restaurants = [
-      { 
-        name: `${restaurantName} Paradise`, 
-        food: "North Indian, Chinese", 
-        service: "Excellent ambience, friendly staff, and quick service.", 
-        rating: 4.7, 
-        address: `12 MG Road, ${city}`, 
-        location: [12.9716, 77.5946] 
-      },
-      { 
-        name: `${restaurantName} Bistro`, 
-        food: "Continental, Italian", 
-        service: "Cozy place with great food quality, but slightly slow service.", 
-        rating: 4.3, 
-        address: `45 Brigade Road, ${city}`, 
-        location: [12.9731, 77.5954] 
-      },
-      { 
-        name: `${restaurantName} Delight`, 
-        food: "Fast Food, Beverages", 
-        service: "Perfect for snacks and hangouts, quick counter service.", 
-        rating: 4.1, 
-        address: `22 Church Street, ${city}`, 
-        location: [12.9742, 77.5928] 
-      },
-      { 
-        name: `${restaurantName} Hub`, 
-        food: "South Indian, Desserts", 
-        service: "Authentic flavors with clean and calm dining space.", 
-        rating: 4.5, 
-        address: `8 Residency Road, ${city}`, 
-        location: [12.9722, 77.5975] 
-      }
-    ];
+    // 1️⃣ Get city coordinates
+    const geoRes = await fetch(
+      `https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(city)}&country=India&format=json&limit=1`
+    );
+    const geoData = await geoRes.json();
 
-    // Clear results
-    searchResults.innerHTML = "";
+    if (!geoData.length) {
+      searchLoader.classList.add("hidden");
+      searchResults.innerHTML = `<p style="color:red;">⚠️ City "${city}" not found in India.</p>`;
+      if (map) map.remove();
+      return;
+    }
 
-    // Display restaurant cards with animation
-    restaurants.forEach((r, index) => {
-      setTimeout(() => {
-        const div = document.createElement("div");
-        div.className = "restaurant-card";
-        div.style.animation = "fadeIn 0.6s ease-in-out";
-        div.innerHTML = `
-          <h3>${r.name}</h3>
-          <p><strong>📍 Address:</strong> ${r.address}</p>
-          <p><strong>🍴 Food:</strong> ${r.food}</p>
-          <p><strong>🛎️ Service:</strong> ${r.service}</p>
-          <div class="stars">${getStarHTML(r.rating)}</div>
-          <p><strong>⭐ Rating:</strong> ${r.rating.toFixed(1)}/5</p>
-        `;
-        searchResults.appendChild(div);
-      }, index * 200);
+    const { lat, lon } = geoData[0];
+
+    // 2️⃣ Fetch restaurants from Overpass API (GET request, smaller radius)
+    const overpassQuery = `
+      [out:json][timeout:25];
+      (
+        node["amenity"="restaurant"](around:2000,${lat},${lon});
+        way["amenity"="restaurant"](around:2000,${lat},${lon});
+        relation["amenity"="restaurant"](around:2000,${lat},${lon});
+      );
+      out center 50;
+    `;
+
+    const url = "https://overpass-api.de/api/interpreter?data=" + encodeURIComponent(overpassQuery);
+    const overpassRes = await fetch(url);
+    const data = await overpassRes.json();
+
+    if (!data.elements || data.elements.length === 0) {
+      searchLoader.classList.add("hidden");
+      searchResults.innerHTML = `<p style="color:red;">⚠️ No restaurants found in "${city}".</p>`;
+      if (map) map.remove();
+      return;
+    }
+
+    // Prepare restaurant list with full address
+    let restaurants = data.elements.map((el) => {
+      const tags = el.tags || {};
+      const parts = [
+        tags["addr:housenumber"] || "",
+        tags["addr:street"] || "",
+        tags["addr:suburb"] || "",
+        tags["addr:city"] || city,
+        tags["addr:postcode"] || ""
+      ];
+      const fullAddress = parts.filter(p => p).join(", ");
+
+      return {
+        name: tags.name || "Unnamed Restaurant",
+        address: fullAddress,
+        food: tags.cuisine ? tags.cuisine.replace(/_/g, " ") : "Various Cuisines",
+        rating: (Math.random() * 1.5 + 3.5).toFixed(1),
+        location: [el.lat || el.center.lat, el.lon || el.center.lon],
+      };
     });
 
-    // Initialize or Reset Map safely
-    setTimeout(() => {
-      if (map) {
-        map.remove(); // reset map before reloading
+    // Filter by restaurant name only if input is given
+    if (restaurantName) {
+      restaurants = restaurants.filter((r) =>
+        r.name.toLowerCase().includes(restaurantName.toLowerCase())
+      );
+
+      if (restaurants.length === 0) {
+        searchLoader.classList.add("hidden");
+        searchResults.innerHTML = `<p style="color:red;">⚠️ No restaurants named "${restaurantName}" found in "${city}".</p>`;
+        if (map) map.remove();
+        return;
       }
-      map = L.map("map").setView(restaurants[0].location, 13);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "© OpenStreetMap",
-      }).addTo(map);
+    }
 
-      // Add markers
-      restaurants.forEach((r) => {
-        L.marker(r.location)
-          .addTo(map)
-          .bindPopup(`<b>${r.name}</b><br>${r.address}<br>${r.food}<br>⭐ ${r.rating}`);
-      });
-    }, 600);
+    // Display results
+    showRestaurants(restaurants, city);
 
-  } catch (error) {
-    console.error(error);
-    searchResults.innerHTML = `<p style="color:red;">❌ Error loading restaurant data.</p>`;
+  } catch (err) {
+    searchLoader.classList.add("hidden");
+    console.error(err);
+    searchResults.innerHTML = `<p style="color:red;">❌ Error loading restaurant data. Please try again later.</p>`;
   }
 });
 
+// ===================== DISPLAY RESULTS + MAP =====================
+function showRestaurants(list, city) {
+  searchLoader.classList.add("hidden");
+  searchResults.innerHTML = "";
 
-// ===================== STAR ANIMATION FUNCTION =====================
+  list.slice(0, 20).forEach((r, index) => {
+    setTimeout(() => {
+      const div = document.createElement("div");
+      div.className = "restaurant-card";
+      div.style.animation = "fadeIn 0.6s ease-in-out";
+      div.innerHTML = `
+        <h3>${r.name}</h3>
+        <p><strong>📍 Address:</strong> ${r.address}</p>
+        <p><strong>🍴 Food:</strong> ${r.food}</p>
+        <div class="stars">${getStarHTML(r.rating)}</div>
+        <p><strong>⭐ Rating:</strong> ${r.rating}/5</p>
+      `;
+      searchResults.appendChild(div);
+    }, index * 100);
+  });
+
+  // Map
+  setTimeout(() => {
+    if (map) map.remove();
+    map = L.map("map").setView(list[0].location, 13);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "© OpenStreetMap",
+    }).addTo(map);
+
+    list.forEach((r) => {
+      L.marker(r.location)
+        .addTo(map)
+        .bindPopup(`<b>${r.name}</b><br>${r.address}<br>${r.food}<br>⭐ ${r.rating}`);
+    });
+  }, 600);
+}
+
+// ===================== STAR FUNCTION =====================
 function getStarHTML(rating) {
   const stars = Math.round(rating);
   let html = "";
-  for (let i = 0; i < stars; i++) {
-    html += `<span class="star-bubble">⭐</span>`;
-  }
+  for (let i = 0; i < stars; i++) html += `<span class="star-bubble">⭐</span>`;
   return html;
 }
