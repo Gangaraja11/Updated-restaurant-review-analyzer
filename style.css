@@ -1,0 +1,960 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Background wrapper with blur */
+.background-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 70px; /* space for navbar */
+}
+
+/* Add blurred background image */
+.background-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("image.png") center center / cover no-repeat;
+  filter: blur(6px);
+  transform: scale(1.05);
+  z-index: -1;
+}
+
+/* Navbar */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.nav-left {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.nav-right a {
+  margin-left: 25px;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: #f0f0f0;
+  transition: color 0.3s ease;
+}
+
+.nav-right a:hover {
+  color: #4da3ff;
+}
+
+/* Main container */
+.app-container {
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Card styling */
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Title */
+.card h1 {
+  color: #333;
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* Textarea */
+textarea {
+  width: 100%;
+  height: 120px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  resize: none;
+  outline: none;
+  transition: 0.3s;
+}
+
+textarea:focus {
+  border-color: #2575fc;
+  box-shadow: 0 0 8px rgba(37, 117, 252, 0.5);
+}
+
+/* Button */
+button {
+  margin-top: 15px;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+}
+
+/* Loader */
+.loader {
+  margin: 20px auto;
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #2575fc;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Result Card */
+.result-card {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 15px;
+  background: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.result-card h2 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.result-card p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.suggestion {
+  margin-top: 10px;
+  font-style: italic;
+  color: #444;
+}
+
+/* Footer */
+footer {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #fff;
+  opacity: 0.9;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Animations */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Wrapper to position carousel behind card */
+.card-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 50px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Center card on top */
+.card {
+  position: relative;
+  z-index: 2;
+}
+
+/* Carousel behind card */
+.carousel-track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  display: flex;
+  transform: translateY(-50%);
+  animation: scroll 20s linear infinite;
+  z-index: 1;
+}
+
+.carousel-track img {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+  margin: 0 5px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+/* Smooth horizontal scroll */
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.carousel-track {
+  display: flex;
+  width: calc((150px + 10px) * 18);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .card {
+    padding: 20px;
+  }
+
+  textarea {
+    height: 100px;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .navbar {
+    padding: 0 20px;
+    font-size: 16px;
+  }
+
+  .nav-right a {
+    margin-left: 15px;
+  }
+}
+.navbar a {
+    color: #a5c2eb;;
+    font-weight: 100; /* Very bold */
+    text-decoration: none;
+    margin-left: 20px;
+    transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+    
+    color: rgb(247, 37, 37); /* optional hover color */
+}
+
+/*navbar typing*/
+.navbar-left {
+  font-weight: 100;
+  font-size: 18px;
+  color: #a5c2eb;
+  overflow: hidden;      /* for typing animation */
+  white-space: nowrap;
+  width: max-content;
+}
+
+
+
+#historyContainer {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+#historyTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+#historyTable th, #historyTable td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+#historyTable th {
+  background-color: #2575fc;
+  color: white;
+}
+
+#backBtn {
+  margin-bottom: 10px;
+  padding: 8px 15px;
+  background-color: #2575fc;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#backBtn:hover {
+  background-color: #6a11cb;
+}
+
+/* Scrollable history table container */
+
+/* Keep container normal */
+#historyContainer {
+  max-height: 450px;   /* Adjust box height as you like */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  overflow: hidden; /* Prevent container itself from scrolling */
+  background: #fff;
+}
+
+/* Make only table body scroll */
+#historyTable {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#historyTable thead th {
+  position: sticky;
+  top: 0;  /* Stick to top of the scroll area */
+  background: #6a11cb;  /* Background so it doesn’t overlap rows */
+  z-index: 2;
+}
+
+#historyTable tbody {
+  display: block;
+  max-height: 300px;   /* Only body scrolls */
+  overflow-y: auto;
+  width: 100%;
+}
+
+#historyTable thead, 
+#historyTable tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed; /* Keeps columns aligned */
+}
+
+/* table drop down*/
+#filterWrapper {
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#filterSelect {
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+#filterSelect:hover {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+#historyTable tbody {
+  transition: opacity 0.4s ease;
+}
+
+
+
+
+/*  analysis graph*/
+#analyzeContainer {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+#backAnalyzeBtn {
+  margin-bottom: 10px;
+  padding: 8px 15px;
+  background-color: #2575fc;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#backAnalyzeBtn:hover {
+  background-color: #6a11cb;
+}
+
+
+/*increasing size of card, table, graph*/
+/* 🔹 Main analyzer card (Home page) */
+.card {
+  max-width: 700px;     /* wider */
+  min-height: 450px;    /* taller */
+  padding: 40px;        /* more inner space */
+  font-size: 1.1rem;
+}
+/* Add extra top margin only for the Analyze Review button */
+.card button {
+  margin-top: 35px;   /* was 15px before */
+}
+#analyzeContainer {
+  display: none;        /* hidden by default */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+#analyzeContainer.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+
+/* 🔹 History container */
+#historyContainer {
+  max-width: 950px;     /* bigger width */
+  min-height: 500px;    /* taller box */
+  margin: 30px auto;
+  padding: 25px;
+}
+
+/* History table spacing */
+#historyTable {
+  font-size: 1rem;
+}
+
+#historyTable th, 
+#historyTable td {
+  padding: 14px 18px;   /* larger cells */
+}
+
+
+
+
+
+/* 🔹 Analyze graph container */
+#analyzeContainer {
+  max-width: 1000px;
+  min-height: 500px;
+  margin: 30px auto;
+  padding: 25px;
+}
+
+#reviewChart {
+  max-height: 450px;    /* bigger graph area */
+}
+
+/* ===================== Analyze Graph Container ===================== */
+#analyzeContainer {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  text-align: center;
+
+  /* Start hidden and slightly below */
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  display: none;  /* Initially hidden */
+}
+
+#analyzeContainer.show {
+  opacity: 1;
+  transform: translateY(0);
+  display: block;
+}
+
+/* Back Button */
+#backAnalyzeBtn {
+  margin-bottom: 15px;
+  padding: 8px 15px;
+  background-color: #2575fc;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#backAnalyzeBtn:hover {
+  background-color: #6a11cb;
+}
+
+/* Optional: Slight padding for chart canvas */
+#reviewChart {
+  margin-top: 15px;
+}
+
+/* ===================== Main Analyzer Card Adjustments ===================== */
+.card {
+  max-width: 700px;
+  min-height: 450px;
+  padding: 40px;
+  font-size: 1.1rem;
+}
+
+/* Increase top margin for Analyze Review button */
+.card button {
+  margin-top: 35px;
+}
+
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .card h1 {
+    font-size: 22px;
+  }
+  textarea {
+    height: 100px;
+  }
+  button {
+    width: 100%;  /* full width button on mobile */
+  }
+  #reviewChart {
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+    text-align: center;
+  }
+  .navbar-right {
+    margin-top: 10px;
+  }
+  .card {
+    padding: 15px;
+  }
+}
+
+/* History container */
+#historyContainer {
+  max-width: 95%;
+  margin: 20px auto;
+  padding: 15px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* Scrollable wrapper */
+#historyTableWrapper {
+  max-height: 300px;     /* vertical scroll */
+  overflow-y: auto;
+  overflow-x: auto;      /* horizontal scroll for small phones */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+/* Table itself */
+#historyTable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px; /* keeps columns readable on small screens */
+}
+
+/* Cells */
+#historyTable th,
+#historyTable td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+  white-space: nowrap; /* no weird wrapping */
+}
+
+/* Sticky header */
+#historyTable thead th {
+  position: sticky;
+  top: 0;
+  background: #2575fc;
+  color: white;
+  z-index: 2;
+}
+
+/* Mobile tweaks */
+@media (max-width: 600px) {
+  #historyTable th,
+  #historyTable td {
+    font-size: 12px;
+    padding: 6px;
+  }
+}
+
+/* Prevent long reviews from breaking layout */
+#historyTable td.review-cell {
+  white-space: normal !important;  /* allow wrapping */
+  word-wrap: break-word;
+  max-width: 250px;                /* adjust as needed */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+
+/* ==================== SEARCH SECTION ==================== */
+/* === SEARCH SECTION STYLES === */
+#searchContainer {
+  display: none;
+  text-align: center;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  max-width: 900px;
+  margin: 30px auto;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+#searchContainer.active {
+  display: block;
+}
+
+#searchForm {
+  margin-bottom: 20px;
+}
+
+#searchForm input {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 40%;
+  font-size: 16px;
+}
+
+#searchForm button {
+  padding: 10px 15px;
+  border: none;
+  background-color: #007BFF;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#searchForm button:hover {
+  background-color: #0056b3;
+}
+
+.results-container {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.restaurant-card {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 10px 0;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.restaurant-card h3 {
+  color: #333;
+}
+
+.stars {
+  position: relative;
+  font-size: 22px;
+  color: gold;
+  display: flex;
+  gap: 4px;
+  margin-top: 5px;
+}
+
+.star-bubble {
+  animation: bubble 0.8s ease-out;
+}
+
+@keyframes bubble {
+  0% { transform: scale(0.5) translateY(10px); opacity: 0; }
+  50% { transform: scale(1.2) translateY(-10px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.map-view {
+  width: 100%;
+  height: 400px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+.restaurant-card {
+  background: rgba(255,255,255,0.9);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  padding: 15px;
+  margin: 10px 0;
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.restaurant-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+}
+
+.stars {
+  display: inline-block;
+  margin: 8px 0;
+}
+
+.star-bubble {
+  display: inline-block;
+  font-size: 22px;
+  animation: pop 0.6s ease forwards;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1.2); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #007BFF;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+.loader.hidden {
+  display: none;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+
+/* LOGIN SECTION STYLES */
+/* ===== Login & Register Section Styles ===== */
+.login-container, .register-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1a73e8, #00bcd4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.7s ease-in-out;
+  z-index: 9999;
+}
+
+.hidden {
+  display: none;
+}
+
+.login-box, .register-box {
+  background: #fff;
+  border-radius: 12px;
+  padding: 40px;
+  width: 360px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: slideUp 0.6s ease;
+}
+
+.user-icon {
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+.role-toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.role-toggle button {
+  flex: 1;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  background: #eee;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.role-toggle .active {
+  background: #1a73e8;
+  color: white;
+}
+
+form input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #1a73e8;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+button:hover {
+  background: #0f5fd6;
+}
+
+.spinner {
+  border: 3px solid #fff;
+  border-top: 3px solid transparent;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  margin-left: 10px;
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
+}
+
+.hidden {
+  display: none;
+}
+
+.login-message, .register-message {
+  margin-top: 10px;
+  color: red;
+}
+
+.switch-register, .switch-login {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+
+
+/* ===== ACTIVE NAV BUTTON UNDERLINE ANIMATION ===== */
+/* ===== ACTIVE NAV BUTTON UNDERLINE ANIMATION ===== */
+nav ul {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+nav ul li {
+  list-style: none;
+  position: relative;
+}
+
+nav ul li a {
+  position: relative;
+  display: inline-block;
+  padding: 10px 15px;
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+/* The underline effect */
+nav ul li a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 4px;
+  width: 0%;
+  height: 2px;
+  background-color: #ff9800;
+  transition: width 0.3s ease-in-out;
+}
+
+/* When active → show underline */
+nav ul li a.active::after {
+  width: 100%;
+}
