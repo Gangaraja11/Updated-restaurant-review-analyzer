@@ -23,7 +23,7 @@ async function analyzeSentiment() {
   resultCard.classList.add("hidden");
 
   try {
-    const response = await fetch("http://127.0.0.1:5000/predict", {
+    const response = await fetch("https://updated-restaurant-review-analyzer.onrender.com/predict", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ review: review })
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
     historyContainer.classList.remove("hidden");
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/history");
+      const response = await fetch("https://updated-restaurant-review-analyzer.onrender.com/history");
       const data = await response.json();
       allData = data;
       renderTable(data); // display all initially
@@ -219,7 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => analyzeContainer.classList.add("show"), 10);
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/history");
+      const response = await fetch("https://updated-restaurant-review-analyzer.onrender.com/history");
       const data = await response.json();
 
       // Count sentiments
@@ -677,6 +677,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, 500);
 });
+
 
 
 
