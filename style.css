@@ -1137,6 +1137,7 @@ fixed* Navbar */
   .hamburger.active span:nth-child(2) {
     opacity: 0;
 /* Navbar */
+/* Navbar */
 .navbar {
   position: fixed;
   top: 0;
@@ -1156,12 +1157,13 @@ fixed* Navbar */
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
-/* ---------- Desktop ---------- */
+/* Desktop Left */
 .navbar-left {
   font-size: 20px;
   font-weight: bold;
 }
 
+/* Desktop Right Menu */
 .navbar-right {
   display: flex;
   align-items: center;
@@ -1180,21 +1182,23 @@ fixed* Navbar */
   color: #4da3ff;
 }
 
-/* ---------- Hamburger Icon (Right Side) ---------- */
+/* ---------- Hamburger Icon (Right + Small Size) ---------- */
 .hamburger {
   display: none;
-  font-size: 32px;
+  font-size: 24px;      /* Smaller icon */
   cursor: pointer;
   color: white;
+  margin-left: auto;     /* Push to right */
+  padding: 5px;
 }
 
-/* ---------- Mobile Menu ---------- */
+/* ---------- Mobile Slide Menu ---------- */
 .mobile-menu {
   position: fixed;
   top: 60px;
   right: 0;
   width: 220px;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(12px);
   padding: 20px;
   border-radius: 0 0 0 12px;
@@ -1207,7 +1211,7 @@ fixed* Navbar */
 }
 
 .mobile-menu a {
-  color: #fff;
+  color: white;
   text-decoration: none;
   font-size: 18px;
   font-weight: 500;
@@ -1220,7 +1224,7 @@ fixed* Navbar */
 /* ---------- Responsive Breakpoint ---------- */
 @media (max-width: 768px) {
 
-  /* Hide desktop links */
+  /* Hide desktop menu */
   .navbar-right {
     display: none;
   }
@@ -1230,6 +1234,7 @@ fixed* Navbar */
     display: block;
   }
 }
+
 
 
 
