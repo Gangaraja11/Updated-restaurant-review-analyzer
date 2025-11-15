@@ -1112,6 +1112,17 @@ nav ul li a.active::after {
   }
 }
 
+/*typing text font size*/
+@media (max-width: 768px) {
+  /* Reduce typing text font size on mobile */
+  #typing-text {
+    font-size: 14px;
+    white-space: nowrap;
+  }
+}
+
+
+
 
 
 
