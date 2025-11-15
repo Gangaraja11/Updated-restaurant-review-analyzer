@@ -1114,12 +1114,16 @@ nav ul li a.active::after {
 
 /*typing text font size*/
 @media (max-width: 768px) {
-  /* Reduce typing text font size on mobile */
+  /* Reduce typing text size & add padding on mobile */
   #typing-text {
     font-size: 14px;
     white-space: nowrap;
+    padding-top: 8px;     /* adjust as needed */
+    padding-right: 10px;  /* adjust as needed */
   }
 }
+
+
 
 
 
