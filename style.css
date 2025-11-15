@@ -1075,5 +1075,44 @@ nav ul li a.active::after {
 }
 
 
+/* Fix hamburger at top-right (outside navbar) */
+.hamburger {
+  position: fixed;
+  top: 12px;        /* space from top */
+  right: 20px;      /* space from right */
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  z-index: 2000;    /* above navbar */
+}
+
+.hamburger span {
+  width: 24px;      /* smaller size */
+  height: 3px;
+  background: white;
+  margin: 4px 0;
+  transition: all 0.3s ease;
+}
+
+/* Mobile Only */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  /* When menu opens */
+  .hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translateY(8px);
+  }
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-8px);
+  }
+}
+
+
+
 
 
