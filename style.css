@@ -542,7 +542,7 @@ footer {
   font-size: 1.1rem;
 }
 
-/* Increase top margin for Analyze Review button */
+/* Ipadding-rightghtp margin for Analyze Review button */
 .card button {
   margin-top: 35px;
 }
@@ -1118,10 +1118,11 @@ nav ul li a.active::after {
   #typing-text {
     font-size: 14px;
     white-space: nowrap;
-    padding-top: 8px;     /* adjust as needed */
-    padding-right: 10px;  /* adjust as needed */
+    padding-top: 20px;     /* adjust as needed */
+    padding-left: 8px;  /* adjust as needed */
   }
 }
+
 
 
 
