@@ -1078,7 +1078,7 @@ nav ul li a.active::after {
 /* Fix hamburger at top-right (outside navbar) */
 .hamburger {
   position: fixed;
-  top: 15px;        /* space from top */
+  top: 17px;        /* space from top */
   right: 20px;      /* space from right */
   display: none;
   flex-direction: column;
@@ -1111,6 +1111,7 @@ nav ul li a.active::after {
     transform: rotate(-45deg) translateY(-8px);
   }
 }
+
 
 
 
