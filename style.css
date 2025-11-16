@@ -1102,13 +1102,13 @@ nav ul li a.active::after {
 
   /* When menu opens */
   .hamburger.active span:nth-child(1) {
-    transform: rotate(45deg) translateY(8px);
+    transform:  translateY(12px) rotate(45deg);
   }
   .hamburger.active span:nth-child(2) {
     opacity: 0;
   }
   .hamburger.active span:nth-child(3) {
-    transform: rotate(-45deg) translateY(-8px);
+    transform:  translateY(-12px) rotate(-45deg);
   }
 }
 
@@ -1122,6 +1122,7 @@ nav ul li a.active::after {
     padding-left: 8px;  /* adjust as needed */
   }
 }
+
 
 
 
