@@ -1079,7 +1079,7 @@ nav ul li a.active::after {
 .hamburger {
   position: fixed;
   top: 25px;        /* space from top */
-  right: 20px;      /* space from right */
+  right: 25px;      /* space from right */
   display: none;
   flex-direction: column;
   cursor: pointer;
@@ -1122,6 +1122,7 @@ nav ul li a.active::after {
     padding-left: 8px;  /* adjust as needed */
   }
 }
+
 
 
 
